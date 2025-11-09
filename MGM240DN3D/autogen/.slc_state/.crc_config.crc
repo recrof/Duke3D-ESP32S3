@@ -1,0 +1,15 @@
+#CRC Codes for initially generated config files -- do not modify!
+sl_clock_manager_oscillator_config.h=807057592
+sl_clock_manager_tree_config.h=1439605491
+sl_core_config.h=-119586893
+sl_device_init_dcdc_config.h=1498363383
+sl_device_init_dpll_config.h=2140489157
+sl_device_init_emu_config.h=622680131
+sl_device_init_hfxo_config.h=1255225254
+sl_fem_util_config.h=-1505314529
+sl_memory_manager_region_config.h=-132681117
+sl_rail_util_callbacks_config.h=-845407485
+sl_rail_util_init_inst0_config.h=-154211771
+sl_rail_util_pa_config.h=781574905
+sl_rail_util_protocol_config.h=-1639031300
+sl_rail_util_sequencer_config.h=856919357

@@ -1,0 +1,149 @@
+/**
+ *  Doom Port to Silicon Labs EFR32xG24 devices and MGM240 modules
+ *  by Nicola Wrachien (next-hack in the comments).
+ *
+ *  This port is based on the excellent doomhack's GBA Doom Port,
+ *  with Kippykip additions.
+ *
+ *  Several data structures and functions have been optimized
+ *  to fit in only 256kB RAM (GBA has 384 kB RAM).
+ *  Z-Depth Light has been restored with almost no RAM consumption!
+ *  Added BLE-based multiplayer.
+ *  Added OPL2-based music.
+ *  Restored screen melt effect!
+ *  Tons of speed optimizations have been done, and the game now
+ *  runs extremely fast, despite the much higher 3D resolution with
+ *  respect to GBA.
+ *
+ *  PrBoom: a Doom port merged with LxDoom and LSDLDoom
+ *  based on BOOM, a modified and improved DOOM engine
+ *  Copyright (C) 1999 by
+ *  id Software, Chi Hoang, Lee Killough, Jim Flynn, Rand Phares, Ty Halderman
+ *  Copyright (C) 1999-2000 by
+ *  Jess Haas, Nicolas Kalkhof, Colin Phipps, Florian Schulze
+ *  Copyright 2005, 2006 by
+ *  Florian Schulze, Colin Phipps, Neil Stevens, Andrey Budko
+ *  Copyright (C) 2021-2023 Nicola Wrachien (next-hack in the comments)
+ *  on the EFR32xG24 and MGM240 port.
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ *  02111-1307, USA.
+ *
+ *  Description: main.h header file. Use this to configure the hardware
+ *  as you wish
+ */
+#ifndef MAIN_H
+#define MAIN_H
+#include <stdbool.h>
+#include "macros.h"
+//
+#define FULL_FRAMEBUFFER                  1
+//
+#define OVERCLOCK                         1
+#if OVERCLOCK
+#define OC_PLLN                           4095
+#define OC_PLLD                           1169
+#define HFRCOCAL_VALUE                    0xCCF19F00UL   // taken from em_cmu.c for 100MHz settings.
+#else
+#define OC_PLLN                           3999
+#define OC_PLLD                           1949
+#define HFRCOCAL_VALUE                    0xCCF09F00UL   // taken from em_cmu.c for 80 MHz settings
+#endif
+#define CPU_FREQUENCY                     (39000 * (OC_PLLN + 1) / (OC_PLLD + 1) * 1000)
+// Test configuration
+#define DISABLE_CACHING_TEXTURE_TO_FLASH  0    // non 0 is only for debug and to test how bad we can get if too many textures are uncached
+#define TEST_DISABLE_ASYNCH_LOAD          0    // non 0 is to check how slow the rendering will be if data is not drawn asynchronously.
+//
+// Feature config
+#define FAST_CPU_SMALL_FLASH              0       // if we have fast cpu but small flash, we can reduce math table sizes
+#define CORRECT_TABLE_ERROR               1       // mandatory for demo compatibility. Will correct errors due to small math tables
+//
+#define CACHE_ALL_COLORMAP_TO_RAM         0       // if enabled this wastes 8.25 more kB, but will improve a little bit the performance
+//
+#define DEMO_SUPPORT                      0
+//
+#define HAS_NETWORK                       1
+//
+#if WIN32
+#define MG24                              0
+#else
+#define MG24                              1
+#endif // WIN32
+
+#define DEBUG_SETUP                       0
+//
+#define DATA_FILE_NAME                     "DUKE3D.GRP" // this is the name on SD card
+//
+// Board-independent configs
+//
+#define FPCLK                             CPU_FREQUENCY
+//
+// Serial Output configuration
+//
+#define DEBUG_OUT_PRINTF                  1
+//
+#define USE_SHARED_USART                  1
+//
+#define UART_OVERSAMPLE                   16U
+#define UART_BAUDRATE                     115200U
+//
+// Timer config
+#define TICK_TIMER_FREQUENCY_HZ           (CPU_FREQUENCY / 8)    // 10MHz
+#define TIMER_TICKS_PER_MILLISECOND       (TICK_TIMER_FREQUENCY_HZ / 1000UL)
+//
+// TIMERS
+// Free running timer, used for delays and timings
+#define TICK_TIMER_NUMBER                 0
+
+#define AUDIO_SAMPLE_TIMER_NUMBER         2
+
+#define FIRST_SPI_NUMBER                  0
+#define SECOND_SPI_NUMBER                 1
+#define FIRST_SPI_USART                   CAT(EUSART, FIRST_SPI_NUMBER)
+#define SECOND_SPI_USART                  CAT(EUSART, SECOND_SPI_NUMBER)
+
+// LDMA and PRS
+#define FIRST_SPI_LDMA_CH                 (0)
+#define SECOND_SPI_LDMA_CH                (FIRST_SPI_LDMA_CH + 1)
+#define INTERLEAVED_SPI_PRS_CH            8     // DO NOT USE PRS 7, it's for BT
+//
+#define FIRST_SPI_LDMA_BYTE_CH                 (SECOND_SPI_LDMA_CH + 1)
+#define SECOND_SPI_LDMA_BYTE_CH                (FIRST_SPI_LDMA_BYTE_CH + 1)
+
+
+#define DISPLAY_LDMA_CH                   (SECOND_SPI_LDMA_BYTE_CH + 1)
+//
+
+//
+#define AUDIO_DMA_CHANNEL_L               (DISPLAY_LDMA_CH + 1)
+#define AUDIO_DMA_CHANNEL_R               (AUDIO_DMA_CHANNEL_L + 1)
+//
+#define ENABLE_MUSIC                      1
+#define MUSIC_NUM_SAMPLES                 1024
+//
+#define ADC_USES_DMA 1
+#define IADC_LDMA_CH                      (AUDIO_DMA_CHANNEL_R + 1)
+//
+// Actual timer definitions.
+#if MG24
+#define TICK_TIMER                        CAT(TIMER, TICK_TIMER_NUMBER)
+//#define TIME_TIMER                        CAT(TIMER, TIME_TIMER_NUMBER)
+#define AUDIO_SAMPLE_TIMER                CAT(TIMER, AUDIO_SAMPLE_TIMER_NUMBER)
+#define AUDIO_PWM_TIMER                   CAT(TIMER, AUDIO_PWM_TIMER_NUMBER)
+unsigned int I_GetTimeMicrosecs(void);
+#endif
+//
+//
+#endif

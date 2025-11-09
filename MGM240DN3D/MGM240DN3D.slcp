@@ -1,0 +1,50 @@
+# Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
+project_name: MGM240DN3D
+label: MGM240DN3D
+description: |
+  This example project shows an empty configuration that can be used as a starting point to add components and functionality.
+category: Example|Platform
+filter:
+- name: Device Type
+  value: [SoC]
+- name: MCU
+  value: [32-bit MCU]
+- name: Project Difficulty
+  value: [Beginner]
+package: platform
+quality: production
+readme:
+- {path: readme.md}
+- {path: readme.md}
+source:
+- {path: app.c}
+include:
+- path: .
+  file_list:
+  - {path: app.h}
+sdk: {id: simplicity_sdk, version: 2025.6.2}
+toolchain_settings: []
+component:
+- {id: MGM240SD22VNA}
+- {id: device_init}
+- {id: device_init_dpll}
+- {id: emlib_eusart}
+- {id: emlib_gpcrc}
+- {id: emlib_iadc}
+- {id: emlib_ldma}
+- {id: emlib_prs}
+- {id: emlib_timer}
+- {id: emlib_usart}
+- {id: emlib_vdac}
+- instance: [inst0]
+  id: rail_util_init
+- {id: rail_util_pa}
+- {id: sl_main}
+- {id: sl_system_compatibility}
+- {id: toolchain_gcc_lto}
+define:
+- {name: DEBUG_EFM}
+ui_hints:
+  highlight:
+  - {path: readme.md, focus: true}
+

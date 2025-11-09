@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="uc.module.setup.ucConfig.com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt.debug#com.silabs.ss.tool.ide.arm.toolchain.gnu.cdt:12.2.1.20221205.gcc" propertyScope="project">
+  <folder name="config">
+    <file name="sl_memory_manager_region_config.h" generated="true" linked="false"/>
+    <file name="sl_core_config.h" generated="true" linked="false"/>
+    <file name="sl_device_init_dcdc_config.h" generated="true" linked="false"/>
+    <file name="sl_device_init_emu_config.h" generated="true" linked="false"/>
+    <file name="sl_rail_util_init_inst0_config.h" generated="true" linked="false"/>
+    <file name="sl_rail_util_sequencer_config.h" generated="true" linked="false"/>
+    <file name="sl_rail_util_protocol_config.h" generated="true" linked="false"/>
+    <file name="sl_fem_util_config.h" generated="true" linked="false"/>
+    <file name="sl_rail_util_callbacks_config.h" generated="true" linked="false"/>
+    <file name="sl_rail_util_pa_config.h" generated="true" linked="false"/>
+    <file name="sl_device_init_hfxo_config.h" generated="true" linked="false"/>
+    <file name="sl_device_init_dpll_config.h" generated="true" linked="false"/>
+  </folder>
+  <includePath uri="studio:/project/config"/>
+</project>
