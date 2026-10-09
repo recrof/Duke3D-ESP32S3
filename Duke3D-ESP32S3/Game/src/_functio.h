@@ -108,6 +108,69 @@ struct keyEntry{
 } ;
 
 
+#if ESP_PLATFORM && !WIN32
+// ESP32-S3 boards. The T-Deck thumb keyboard uses these directly (Sym + key
+// gives the digits printed on the keys: weapons are Sym+W (1), Sym+E (2)...;
+// "$" is Escape and Mic is the map). Trackball, touch controls and Bluetooth
+// gamepads send the same scancodes (fire RCtrl, jump "/", crouch Z, ...).
+const struct keyEntry  keydefaults[] = {
+	{ "Move_Forward", 	"W", 		"Up" },
+	{ "Move_Backward", 	"S", 		"Down" },
+	{ "Turn_Left", 		"A", 		"Left" },
+	{ "Turn_Right", 	"D", 		"Right" },
+	{ "Strafe", 		"LAlt", 	"RAlt" },
+	{ "Fire", 			"LCtrl", 	"RCtrl" },
+	{ "Open", 			"Space", 	"" },
+	{ "Run", 			"LShift", 	"RShift" },
+	{ "AutoRun", 		"CapLck", 	"" },
+	{ "Jump", 			"X", 		"/" },
+	{ "Crouch", 		"Z", 		"" },
+	{ "Look_Up", 		"PgUp", 	"Kpad9" },
+	{ "Look_Down", 		"PgDn", 	"Kpad3" },
+	{ "Look_Left", 		"Insert", 	"Kpad0" },
+	{ "Look_Right", 	"Delete", 	"Kpad." },
+	{ "Strafe_Left", 	"Q", 		"" },
+	{ "Strafe_Right", 	"E", 		"" },
+	{ "Aim_Up", 		"T", 		"KPad7" },
+	{ "Aim_Down", 		"G", 		"Kpad1" },
+	{ "Weapon_1", 		"1", 		"" },
+	{ "Weapon_2", 		"2", 		"" },
+	{ "Weapon_3", 		"3", 		"" },
+	{ "Weapon_4", 		"4", 		"" },
+	{ "Weapon_5", 		"5", 		"" },
+	{ "Weapon_6", 		"6", 		"" },
+	{ "Weapon_7", 		"7", 		"" },
+	{ "Weapon_8", 		"8", 		"" },
+	{ "Weapon_9", 		"9", 		"" },
+	{ "Weapon_10",		"0", 		"" },
+	{ "Inventory", 		"Enter", 	"KpdEnt" },
+	{ "Inventory_Left",	"K", 		"[" },
+	{ "Inventory_Right","L", 		"]" },
+	{ "Holo_Duke", 		"H", 		"" },
+	{ "Jetpack", 		"J", 		"" },
+	{ "NightVision", 	"N", 		"" },
+	{ "MedKit", 		"M", 		"" },
+	{ "TurnAround", 	"BakSpc", 	"" },
+	{ "SendMessage", 	"", 		"" },
+	{ "Map", 			"Tab", 		"" },
+	{ "Shrink_Screen", 	"-", 		"Kpad-" },
+	{ "Enlarge_Screen", "=", 		"Kpad+" },
+	{ "Center_View", 	"B", 		"KPad5" },
+	{ "Holster_Weapon", "ScrLck", 	"" },
+	{ "Show_Opponents_Weapon", "", 	"" },
+	{ "Map_Follow_Mode","F", 		"" },
+	{ "See_Coop_View", 	"", 		"" },
+	{ "Mouse_Aiming", 	"U", 		"" },
+	{ "Toggle_Crosshair", "I", 		"" },
+	{ "Steroids", 		"R", 		"" },
+	{ "Quick_Kick", 	"C", 		"" },
+	{ "Next_Weapon", 	"P", 		"'" },
+	{ "Previous_Weapon","O", 		";" },
+	{ "Hide_Weapon", 	"Y", 		"" },
+	{ "Auto_Aim", 		"V", 		"" },
+	{ "Console", 		"`", 		"" }
+};
+#else
 const struct keyEntry  keydefaults[] = {
 	{ "Move_Forward", 	"Up", 		"Kpad8" },
 	{ "Move_Backward", 	"Down", 	"Kpad2" },
@@ -175,6 +238,7 @@ const struct keyEntry  keydefaults[] = {
 	{ "Auto_Aim", 		"V", 		"" },
 	{ "Console", 		"`", 		"" }
 };
+#endif
 
 
 

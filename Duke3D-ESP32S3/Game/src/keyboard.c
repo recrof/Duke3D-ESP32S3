@@ -246,6 +246,28 @@ void keyhandler(void)
     keyIsWaiting = keyIsWaiting ||  pressed;
 
     CONTROL_UpdateKeyboardState(lastkey, pressed);
+#elif ESP_PLATFORM
+    // Outside gameplay the trackball navigates menus instead of turning.
+    int gm = ps[myconnectindex].gm;
+    inputSetMenuMode(!(gm & MODE_GAME) || (gm & (MODE_MENU | MODE_TYPE)) || ud.recstat == 2);
+    uint8_t scancode;
+    bool pressed;
+    while (inputGetKeyEvent(&scancode, &pressed))
+    {
+        if (scancode >= MAXKEYBOARDSCAN)
+        {
+            continue;
+        }
+        set_KB_KeyDown(scancode, pressed);
+        if (pressed)
+        {
+            KB_LastScan = scancode;
+            keyIsWaiting = true;
+            // Leave later events (e.g. this key's release) for the next call,
+            // so a quick tap is still seen as pressed by whoever polls next.
+            break;
+        }
+    }
 #else
 //    static int oldkeys = 0;
     uint16_t keys;

@@ -1501,7 +1501,7 @@ typedef union
     };
 
 } coo2D_t;
-#if WIN32 && REDUCE_PVWALLS
+#if (WIN32 || ESP_PLATFORM) && REDUCE_PVWALLS
 static inline int SSAT_N_BITS_VEC_DIST(int x)
 {
     if (x > ((1 << (N_BITS_VEC_DIST - 1)) - 1))

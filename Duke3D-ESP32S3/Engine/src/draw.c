@@ -37,7 +37,7 @@ void sethlinesizes(int32_t x_size_bits, int32_t y_size_bits, const uint8_t * tex
 __attribute__((always_inline)) static inline uint32_t packCoordinates (uint32_t fixedx, uint32_t fixedy, uint32_t xprec16, uint32_t yprec16)
 {
   uint32_t result;
-#if MG24
+#if MG24 && !ESP_PLATFORM
   // this packs 32 bits fixed point x and y coordinates to a xxxxxyyyyy right aligned variant for indexing to array.
   // xprec16 and yprec16 are the precision (in number of fractional bits) the fixedpoint would have if they were shifted to a 16 bit integer.
   // i.e. they are 16 - size of integer part
@@ -65,7 +65,7 @@ int hlineasm4pix = 0;
 #endif // WIN32
 void hlineasmQuad(int32_t numPixels, uint32_t fixed_y, uint32_t fixed_x, uint8_t *dest)
 {
-#if WIN32
+#if WIN32 || ESP_PLATFORM
     // if drawing more than 3 pixels, let's check if we can store aligned.
     const uint8_t * texture = draws.textureSetup;
     const int32_t stepx = draws.asm1;

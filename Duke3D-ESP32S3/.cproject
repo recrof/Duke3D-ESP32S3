@@ -249,7 +249,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="trashed_modified_files|MGM240DN3D_cmake|MGM240DN3D_iar_cmake" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="main|.pio|trashed_modified_files|MGM240DN3D_cmake|MGM240DN3D_iar_cmake" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

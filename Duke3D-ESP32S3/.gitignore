@@ -1,0 +1,11 @@
+.projectlinkstore
+# ESP32-S3 build (PlatformIO / idf.py)
+.pio/
+build/
+build-*/
+sdkconfig
+sdkconfig.old
+sdkconfig.tdeck
+sdkconfig.wio_l2
+dependencies.lock
+managed_components/

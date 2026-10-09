@@ -9613,7 +9613,7 @@ int dn3dmain(int argc,char  **argv)
 #endif
 //   if (CONTROL_JoystickEnabled)
 //       CONTROL_CenterJoystick(CenterCenter,UpperLeft,LowerRight,CenterThrottle,CenterRudder);
-#if BOARD == BOARD_THEGAMEPAD_ARDUINONANOMATTER
+#if BOARD == BOARD_THEGAMEPAD_ARDUINONANOMATTER || ESP_PLATFORM
    CONTROL_JoystickEnabled = 1;
 #endif
    printf("Loading palette/lookups.");
