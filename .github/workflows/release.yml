@@ -1,0 +1,58 @@
+# Builds the firmware of each board and publishes a GitHub release when a vX.Y tag is pushed
+name: Release
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Duke3D-ESP32S3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.platformio
+          key: platformio-${{ hashFiles('Duke3D-ESP32S3/platformio.ini') }}
+
+      - name: Install PlatformIO
+        run: pip install platformio esptool
+
+      - name: Build
+        run: pio run -e tdeck -e wio_l2
+
+      - name: Merge the images
+        run: |
+          mkdir dist
+          for env in tdeck wio_l2; do
+            b=.pio/build/$env
+            python -m esptool --chip esp32s3 merge_bin -o dist/duke3d-$env.bin \
+              0x0 $b/bootloader.bin 0x8000 $b/partitions.bin 0x10000 $b/firmware.bin
+          done
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: Duke3D-ESP32S3/dist/*.bin
+          generate_release_notes: true
+          body: |
+            Firmware images, to flash at 0x0:
+
+            ```
+            esptool.py --chip esp32s3 write_flash 0x0 duke3d-tdeck.bin
+            ```
+
+            - `duke3d-tdeck.bin`: LilyGO T-Deck / T-Deck Plus
+            - `duke3d-wio_l2.bin`: Seeed Studio Wio Tracker L2 / L2 Pro
+
+            Copy `DUKE3D.GRP` to the root of the SD card.
